@@ -16,7 +16,7 @@ class Employee {
     }
 
     getRole() { // Returns 'Employee'
-        console.log(this)
+        console.log(`Role: ${this}`);
     }
 }
 
