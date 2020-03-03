@@ -7,6 +7,20 @@ const fs = require("fs");
 const OUTPUT_DIR = path.resolve(__dirname, "output")
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
+
+function addEmployee() {
+    const employeeRole = [{
+        type: "list",
+        message: "What is the team member's role?",
+        choices: ["Manager", "Engineer", "Intern"],
+        name: "employeeRole"
+    }];
+    inquirer.prompt(employeeRole).then(res => {
+        console.log(res);
+    })
+}
+
+
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 // After the user has input all employees desired, call the `render` function (required
