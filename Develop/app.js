@@ -9,28 +9,47 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 let teamMembers = [];
 
-function addEmployee() {
-    const employeeRole = [{
+addingEmployee();
+
+async function addingEmployee() {
+    const addingEmployee = [{
         type: "list",
-        message: "What is the team member's role?",
-        choices: ["Manager", "Engineer", "Intern"],
-        name: "employeeRole"
-    }];
-    inquirer.prompt(employeeRole).then(res => {
-        console.log(res);
-        if (res.employeeRole == "Manager") {
-            addManager();
-        } else if (res.employeeRole == "Engineer") {
-            addEngineer();
-        } else if (res.employeeRole == "Intern") {
-            addIntern();
+        message: "Would you like to add an employee?",
+        choices: ["yes", "no"],
+        name: "addingEmployee"
+    }]
+    inquirer.prompt(addingEmployee).then(res => {
+        if (res.addingEmployee == "yes") {
+            chooseEmployeeRole();
+        } else {
+            return console.log(teamMembers)
         }
     })
+
+
+    async function chooseEmployeeRole() {
+        const employeeRole = [{
+            type: "list",
+            message: "What is the team member's role?",
+            choices: ["Manager", "Engineer", "Intern"],
+            name: "employeeRole"
+        }];
+        await inquirer.prompt(employeeRole).then(res => {
+            if (res.employeeRole == "Manager") {
+                addManager();
+            } else if (res.employeeRole == "Engineer") {
+                addEngineer();
+            } else {
+                addIntern();
+            }
+        })
+
+    }
 }
 
-addEmployee();
+// chooseEmployeeRole();
 
-function addManager() {
+async function addManager() {
     const managerQuestions = [{
             type: "input",
             message: "What is the manager's name?",
@@ -39,7 +58,7 @@ function addManager() {
         {
             type: "input",
             message: "What is the manager's ID?",
-            name: id
+            name: "id"
         },
         {
             type: "input",
@@ -53,14 +72,14 @@ function addManager() {
             name: "officeNumber"
         }
     ]
-    inquirer.prompt(engineerQuestions).then(res => {
+    await inquirer.prompt(engineerQuestions).then(res => {
         const manager = new Engineer(res.name, res.id, res.email, res.officeNumber);
         teamMembers.push(manager);
-        addEmployee();
+        addingEmployee();
     })
 }
 
-function addEngineer() {
+async function addEngineer() {
     const engineerQuestions = [{
             type: "input",
             message: "What is the engineer's name?",
@@ -69,7 +88,7 @@ function addEngineer() {
         {
             type: "input",
             message: "What is the engineer's ID?",
-            name: id
+            name: "id"
         },
         {
             type: "input",
@@ -87,11 +106,11 @@ function addEngineer() {
     inquirer.prompt(engineerQuestions).then(res => {
         const engineer = new Engineer(res.name, res.id, res.email, res.github);
         teamMembers.push(engineer);
-        addEmployee();
+        // addingEmployee();
     })
 }
 
-function addIntern() {
+async function addIntern() {
     const internQuestions = [{
             type: "input",
             message: "What is the intern's name?",
@@ -100,7 +119,7 @@ function addIntern() {
         {
             type: "input",
             message: "What is the intern's ID?",
-            name: id
+            name: "id"
         },
         {
             type: "input",
@@ -117,9 +136,23 @@ function addIntern() {
     inquirer.prompt(internQuestions).then(res => {
         const intern = new Intern(res.name, res.id, res.email, res.school);
         teamMembers.push(intern);
-        addEmployee();
+        // addingEmployee();
     })
 }
+
+// console.log(teamMembers);
+// //should be object of teamMembers
+// console.log(teamMembers);
+
+const htmlRender = render(teamMembers);
+async function renderHTML() {
+    return console.log(htmlRender)
+}
+
+
+//fs write htmlRender to file html type
+
+
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
@@ -138,4 +171,4 @@ function addIntern() {
 // and Intern classes should all extend from a class named Employee; see the directions
 // for further information. Be sure to test out each class and verify it generates an 
 // object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work!```
+// for the provided `render` function to work!```s
