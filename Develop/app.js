@@ -21,7 +21,7 @@ function addingEmployee() {
         if (res.addingEmployee == "yes") {
             chooseEmployeeRole();
         } else {
-            return console.log(teamMembers)
+            return createTeam();
         }
     })
 
@@ -139,10 +139,7 @@ async function addIntern() {
 }
 
 addingEmployee();
-const htmlRender = render(teamMembers);
 
 async function createTeam() {
-    fs.writeFileSync(outputPath, htmlRender, "utf-8")
+    fs.writeFileSync(outputPath, render(teamMembers), "utf-8")
 }
-
-createTeam();
